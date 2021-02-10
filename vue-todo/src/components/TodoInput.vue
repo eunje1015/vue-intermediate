@@ -4,29 +4,47 @@
       <span class="addContainer" v-on:click="addTodo">
           <i class="fas fa-plus addBtn"></i>
       </span>
+    <Modal v-if="showModal" @close="showModal = false">
+        <!--
+        you can use custom content here to overwrite
+        default content
+        -->
+        <h3 slot="header">경고!
+            <i class="fas fa-times closeModalBtn" @click="showModal = false"></i>
+        </h3>
+        <div slot="body">내용을 입력하세요</div>
+    </Modal>
   </div>
 </template>
 
 <script>
+import Modal from './common/Modal.vue'
+
 export default {
     data: function() {
         return {
-            newTodoItem: ""
+            newTodoItem: "",
+            showModal: false
         }
     },
     methods: {
         addTodo: function() {
             if(this.newTodoItem !== '') {
-                let obj = {completed : false, item: this.newTodoItem};
-                localStorage.setItem(this.newTodoItem, JSON.stringify(obj)); // 로컬 스토리지에 저장, key:value
+                this.$emit('addTodoItem', this.newTodoItem);
                 //구글 개발자 도구 - Application탭 - Local Storage로 확인
                 //JSON.stringify : 자바스크립트 객체를 스트링으로 변화해서 넣어줌
                 this.clearInput();
+            }
+            else {
+                this.showModal = !this.showModal;
             }
         },
         clearInput: function() {
             this.newTodoItem = '';
         }
+    },
+    components: {
+        Modal : Modal
     }
 }
 </script>
@@ -56,5 +74,7 @@ input:focus {
     color: white;
     vertical-align: middle;
 }
-
+.closeModalBtn {
+    color: #42b983;
+}
 </style>
