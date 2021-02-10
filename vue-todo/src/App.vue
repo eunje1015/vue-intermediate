@@ -14,34 +14,34 @@ import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
 
 export default {
-  data: function() {
+  data() {
       return {
         todoItems: []
       }
   },
   methods: {
-    addOneItem: function(todoItem) {
-        let obj = {completed : false, item: todoItem};
+    addOneItem(todoItem) {
+        const obj = {completed : false, item: todoItem};
         localStorage.setItem(todoItem, JSON.stringify(obj)); // 로컬 스토리지에 저장, key:value
         this.todoItems.push(obj); // 로컬 스토리지와 화면의 item 동기화
     },
-    removeOneItem: function(todoItem, index) {
+    removeOneItem(todoItem, index) {
         localStorage.removeItem(todoItem.item);
         this.todoItems.splice(index, 1);
         //splice : 자바스크립트 배열 methods로 특정 index부터 지울 수 있다.
     },
-    toggleOneItem: function(todoItem, index) {
+    toggleOneItem(todoItem, index) {
         this.todoItems[index].completed = !this.todoItems[index].completed
         // localStorage의 update 로직이 없음
         // localStorage.removeItem(todoItem.item);
         localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
     },
-    clearAllItems: function(){
+    clearAllItems(){
         localStorage.clear();
         this.todoItems = [];
     }
   },
-  created: function() {
+  created() {
       //vue 인스턴스의 라이프 사이클 중에서 인스턴스가 생성되었을 때 불리는 훅
       if(localStorage.length > 0) {
           for(let i=0; i<localStorage.length; i++) {
@@ -54,10 +54,14 @@ export default {
       }
   },
   components: {
-    'TodoHeader' : TodoHeader,
-    'TodoInput' : TodoInput,
-    'TodoList' : TodoList,
-    'TodoFooter' : TodoFooter
+    // 'TodoHeader' : TodoHeader,
+    // 'TodoInput' : TodoInput,
+    // 'TodoList' : TodoList,
+    // 'TodoFooter' : TodoFooter
+    TodoHeader,
+    TodoInput,
+    TodoList,
+    TodoFooter
   }
 }
 </script>
